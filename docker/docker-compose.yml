@@ -1,0 +1,32 @@
+version: "3.1"
+services:
+
+    mysql:
+      image: mysql:8.0
+      container_name: webapp-mysql
+      working_dir: /application
+      environment:
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_DATABASE=webapp
+        - MYSQL_USER=webapp_user
+        - MYSQL_PASSWORD=password
+      ports:
+        - "1027:3306"
+
+    python:
+      build: python3
+      container_name: webapp-python
+      working_dir: /application
+      volumes:
+        - ../app:/application
+
+  # DB access via PHP my admin
+    phpmyadmin:
+      image: phpmyadmin
+      container_name: webapp-phpmyadmin
+      environment:
+        - PMA_ARBITRARY=1
+      restart: always
+      ports:
+        - 8181:80
+
